@@ -1,0 +1,35 @@
+/* center the window */
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+    font-family: Arial;
+}
+
+/* for the new game button */
+#new-game-button {
+    background-color: #007BFF;
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+/* for the button when the mouse is over it */
+#new-game-button:hover {
+    background-color: #0056B3;
+}
+/*title size*/
+#game-title {
+    font-size: 48px;
+}

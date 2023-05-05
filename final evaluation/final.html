@@ -2,16 +2,18 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>To-Do List with MVC</title>
+    <title>Word Guessing Game</title>
+    <link rel="stylesheet" href="style.css">    
 </head>
 <body>
-    <h1>To-Do List</h1>
-    <form id="todo-form">
-        <input type="text" id="todo-input" placeholder="Enter a task" required>
-        <button type="submit">Add Task</button>
-    </form>
-    <ul id="todo-list"></ul>
-    <script src="final.js"></script>
+    <h1 id="game-title">Word Guessing Game</h1>
+    <p id="score">0 / 10</p>
+    <p id="hidden-word">_ _ _ _ _</p>
+    <input type="text" id="guess-input" maxlength="1" onkeypress="return /[a-z]/i.test(event.key)">
+    <button id="new-game-button">New Game</button>    
+    <p id="timer">60</p>
+    <script src="script.js"></script>
 </body>
 </html>
