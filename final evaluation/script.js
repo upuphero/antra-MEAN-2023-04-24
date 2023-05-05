@@ -23,7 +23,8 @@ class Model {
             "condition",
             "comfortable"
         ];
-        // Initialize the game state
+        //words which are guessed successfully 
+        this.correctWords = 0;
         this.initGame();
     }
 
@@ -111,6 +112,7 @@ class Controller {
             this.updateHiddenWord();
             //check if all the letters are revealed
             if (this.model.hiddenWord.indexOf("_") === -1) {
+                this.model.correctWords++;
                 this.startNewGame();
             }
         } else {
@@ -118,8 +120,9 @@ class Controller {
             this.update_try();
             //check if the game is over with 10 tries or time is up
             if (this.model.wrongGuesses === this.model.maxWrongGuesses||this.timeRemaining === 0) {
-                alert(`Game over! You have guessed ${this.model.currentWord.length - this.model.hiddenWord.split("_").length} words!`);
+                alert(`Game over! You have guessed ${this.model.correctWords} words!`);
                 //reset the interval
+                this.model.correctWords = 0;
                 clearInterval(this.timer);
                 this.startNewGame();
             }
@@ -137,7 +140,7 @@ class Controller {
             this.updateTimer();
             if (this.timeRemaining === 0) {
                 clearInterval(this.timer);
-                alert(`Time's up! You have guessed ${this.model.currentWord.length - this.model.hiddenWord.split("_").length} words!`);
+                alert(`Time's up! You have guessed ${this.model.correctWords} words!`);
                 this.startNewGame();
             }
         }, 1000);
@@ -146,6 +149,7 @@ class Controller {
     update_try() {
         this.view.score.textContent = `${this.model.wrongGuesses} / ${this.model.maxWrongGuesses}`;
     }
+
     //update the hidden word
     updateHiddenWord() {
         this.view.hiddenWordElement.textContent = this.model.hiddenWord.split("").join(" ");
