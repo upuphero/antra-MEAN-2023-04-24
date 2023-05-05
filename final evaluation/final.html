@@ -11,6 +11,7 @@
     <h1 id="game-title">Word Guessing Game</h1>
     <p id="score">0 / 10</p>
     <p id="hidden-word">_ _ _ _ _</p>
+    <!-- match the single letter,/[a-z]/i is used to check the input is alphabet-->
     <input type="text" id="guess-input" maxlength="1" onkeypress="return /[a-z]/i.test(event.key)">
     <button id="new-game-button">New Game</button>    
     <p id="timer">60</p>

@@ -1,7 +1,7 @@
 class Model {
     constructor() {
         // Add a list of words to the model
-        this.words = this.words = [
+        this.words = [
             "ballot",
             "soil",
             "legislation",
@@ -53,6 +53,7 @@ class Model {
 
 class View {
     constructor() {
+        //Dom elements
         this.gameTitle = document.getElementById("game-title");
         this.score = document.getElementById("score");
         this.guessInput = document.getElementById("guess-input");
@@ -88,7 +89,7 @@ class Controller {
         //initialize the game state
         this.model.initGame();
         //reset score
-        this.updateScore();
+        this.update_try();
         //reset hidden word
         this.updateHiddenWord();
         //reset countdown timer
@@ -104,25 +105,31 @@ class Controller {
         if (letterIndex === -1) {
             return;
         }
+        //check if the guess is correct
         if (this.model.currentWord[letterIndex] === guess) {
             this.model.hiddenWord = this.revealLetters(this.model.hiddenWord, this.model.currentWord, guess);
             this.updateHiddenWord();
+            //check if all the letters are revealed
             if (this.model.hiddenWord.indexOf("_") === -1) {
                 this.startNewGame();
             }
         } else {
             this.model.wrongGuesses++;
-            this.updateScore();
+            this.update_try();
+            //check if the game is over with 10 tries or time is up
             if (this.model.wrongGuesses === this.model.maxWrongGuesses||this.timeRemaining === 0) {
                 alert(`Game over! You have guessed ${this.model.currentWord.length - this.model.hiddenWord.split("_").length} words!`);
+                //reset the interval
                 clearInterval(this.timer);
                 this.startNewGame();
             }
         }
     }
+    //display the update timer
     updateTimer() {
         this.view.timer.textContent = this.timeRemaining;
     }
+
     // Add a method to start the timer
     startTimer() {
         this.timer = setInterval(() => {
@@ -135,15 +142,15 @@ class Controller {
             }
         }, 1000);
     }
-
-    updateScore() {
+    //update the number of wrong guesses
+    update_try() {
         this.view.score.textContent = `${this.model.wrongGuesses} / ${this.model.maxWrongGuesses}`;
     }
-
+    //update the hidden word
     updateHiddenWord() {
         this.view.hiddenWordElement.textContent = this.model.hiddenWord.split("").join(" ");
     }
-
+    //reveal the letters
     revealLetters(hiddenWord, currentWord, guess) {
         return hiddenWord.split("").map((c, i) => c === "_" && currentWord[i] === guess ? guess : c).join("");
     }
