@@ -33,3 +33,10 @@ body {
 #game-title {
     font-size: 48px;
 }
+.correct-guess {
+    color: green;
+}
+
+.incorrect-guess {
+    color: red;
+}

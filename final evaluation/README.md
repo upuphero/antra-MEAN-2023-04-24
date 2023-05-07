@@ -1,6 +1,18 @@
 # antra-MEAN-2023-04-24
 ## final evaluation
 
+## Results:
+
+1. Demonstrate the proper usage of MVC. 
+2. Realize basic functionalities.
+3. Realize the bonus function:
+I. Clear the guess history when a new word is displayed.
+II. Implement a 60-second time limit for the game
+III. Use different colors to differentiate between correct and incorrect letters in the guess history.
+
+## Work to do 
+
+
 
 ### Requirements:
 
@@ -74,3 +86,5 @@
 	3. Ensure each letter only appears once in the history.
 	4. Clear the guess history when a new word is displayed.
 2. Implement a 60-second time limit for the game. Within this timeframe, the user can continue guessing as long as they do not exceed 10 incorrect guesses. (Hint: Use the setInterval function)
+
+

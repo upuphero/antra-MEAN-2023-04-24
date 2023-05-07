@@ -38,6 +38,7 @@ class Model {
         this.wrongGuesses = 0;
         //maximum number of allowed wrong guesses
         this.maxWrongGuesses = 10;
+        this.guessHistory = new Set();
     }
     //hide letters in the currentword
     hideRandomLetters(word) {
@@ -61,6 +62,7 @@ class View {
         this.newGameButton = document.getElementById("new-game-button");
         this.hiddenWordElement = document.getElementById("hidden-word");
         this.timer = document.getElementById("timer");
+        this.guessHistory = document.getElementById("guess-history");
     }
 }
 
@@ -93,6 +95,7 @@ class Controller {
         this.update_try();
         //reset hidden word
         this.updateHiddenWord();
+        this.updateGuessHistory();
         //reset countdown timer
         this.timeRemaining = 60;
         this.updateTimer();
@@ -101,6 +104,12 @@ class Controller {
     }
 
     processGuess(guess) {
+        if (this.model.guessHistory.has(guess)) {
+            alert("You have already guessed this letter!");
+            return;
+        }
+        this.model.guessHistory.add(guess);
+
         //find the first hidden letter
         const letterIndex = this.model.hiddenWord.indexOf("_");
         if (letterIndex === -1) {
@@ -112,8 +121,10 @@ class Controller {
             this.updateHiddenWord();
             //check if all the letters are revealed
             if (this.model.hiddenWord.indexOf("_") === -1) {
+                alert("Guessed this letter successfully!");
                 this.model.correctWords++;
                 this.startNewGame();
+                
             }
         } else {
             this.model.wrongGuesses++;
@@ -154,6 +165,49 @@ class Controller {
     updateHiddenWord() {
         this.view.hiddenWordElement.textContent = this.model.hiddenWord.split("").join(" ");
     }
+
+    processGuess(guess) {
+        if (Array.from(this.model.guessHistory).some(item => item.letter === guess)) {
+            alert("You have already guessed this letter!");
+            return;
+        }
+
+        const isCorrectGuess = this.model.currentWord.includes(guess);
+        this.model.guessHistory.add({letter: guess, correct: isCorrectGuess});
+
+        if (isCorrectGuess) {
+            this.model.hiddenWord = this.revealLetters(this.model.hiddenWord, this.model.currentWord, guess);
+            this.updateHiddenWord();
+
+            if (this.model.hiddenWord.indexOf("_") === -1) {
+                this.model.correctWords++;
+                this.startNewGame();
+            }
+        } else {
+            this.model.wrongGuesses++;
+            this.update_try();
+
+            if (this.model.wrongGuesses === this.model.maxWrongGuesses) {
+                alert(`Game over! You have guessed ${this.model.correctWords} words!`);
+                this.startNewGame();
+            }
+        }
+
+        this.updateGuessHistory();
+    }
+
+    
+    updateGuessHistory() {
+        this.view.guessHistory.innerHTML = "";
+        this.model.guessHistory.forEach((guess) => {
+            const guessElement = document.createElement("span");
+            guessElement.textContent = guess.letter;
+            guessElement.classList.add(guess.correct ? "correct-guess" : "incorrect-guess");
+            this.view.guessHistory.appendChild(guessElement);
+        });
+    }
+
+
     //reveal the letters
     revealLetters(hiddenWord, currentWord, guess) {
         return hiddenWord.split("").map((c, i) => c === "_" && currentWord[i] === guess ? guess : c).join("");
